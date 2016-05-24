@@ -1,16 +1,16 @@
 import ReleaseTransformations._
 
-name := """gnip-rule-validator"""
+name := """cloudsearch-rule-validator"""
 
 scalaVersion := "2.11.7"
 
-packageSummary := "Gnip Rule Validator"
+packageSummary := "CloudSearch Query Validator"
 
-packageDescription := "Gnip Rule Validator using FastParse"
+packageDescription := "CloudSearch Query Validator using FastParse"
 
-maintainer := "Jeroen Rosenberg <jeroen.rosenberg@gmail.com>"
+maintainer := "Jasper Timmer <jjwtimmer@gmail.com>"
 
-organization := "com.github.jeroenr"
+organization := "com.github.jjwtimmer"
 
 //uncomment the following line if you want cross build
 // crossScalaVersions := Seq("2.10.4", "2.11.6")
@@ -30,7 +30,7 @@ releasePublishArtifactsAction := PgpKeys.publishSigned.value
 pomIncludeRepository := { _ => false }
 
 pomExtra :=
-  <url>https://github.com/jeroenr/gnip-rule-validator</url>
+  <url>https://github.com/jjwtimmer/cloudsearch-query-validator</url>
     <licenses>
       <license>
         <name>BSD-style</name>
@@ -39,13 +39,13 @@ pomExtra :=
       </license>
     </licenses>
     <scm>
-      <url>git@github.com:jeroenr/gnip-rule-validator.git</url>
-      <connection>scm:git:git@github.com:jeroenr/gnip-rule-validator.git</connection>
+      <url>git@github.com:jjwtimmer/cloudsearch-query-validator.git</url>
+      <connection>scm:git:git@github.com:jjwtimmer/cloudsearch-query-validator.git</connection>
     </scm>
     <developers>
       <developer>
-        <id>jeroenr</id>
-        <name>Jeroen Rosenberg</name>
+        <id>jjwtimmer</id>
+        <name>Jasper Timmer</name>
       </developer>
     </developers>
 
@@ -56,7 +56,7 @@ scalacOptions ++=  Seq(
 )
 
 libraryDependencies ++= Seq(
-  "com.lihaoyi" %% "fastparse" % "0.3.6",
+  "com.lihaoyi" %% "fastparse" % "0.3.7",
   "ch.qos.logback" % "logback-classic" % "1.1.2",
   "org.scalatest" %% "scalatest" % "2.2.1" % "test"
 )
@@ -81,3 +81,6 @@ releaseProcess := Seq[ReleaseStep](
   ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
   pushChanges
 )
+
+
+fork in run := true

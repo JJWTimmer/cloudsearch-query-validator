@@ -11,6 +11,9 @@ lib_managed/
 src_managed/
 project/boot/
 project/plugins/project/
+.sbtserver
+.sbtserver.lock
+sbt-ui.sbt
 
 # IntelliJ
 .idea/
