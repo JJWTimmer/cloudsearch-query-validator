@@ -4,9 +4,9 @@ name := """cloudsearch-query-validator"""
 
 scalaVersion := "2.11.7"
 
-packageSummary := "CloudSearch Structered Query Validator"
+packageSummary := "CloudSearch Structured Query Validator"
 
-packageDescription := "CloudSearch Structered Query Validator using FastParse"
+packageDescription := "CloudSearch Structured Query Validator using FastParse"
 
 maintainer := "Jasper Timmer <jjwtimmer@gmail.com>"
 
