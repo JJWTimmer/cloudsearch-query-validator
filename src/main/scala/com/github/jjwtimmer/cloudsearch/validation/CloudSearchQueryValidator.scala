@@ -41,6 +41,7 @@ class CloudSearchQueryParser {
   private val second = P(CharIn('0' to '5') ~ digit)
   private val date = P("'" ~ year ~ "-" ~ month ~ "-" ~ day ~ "T" ~ hour ~ ":" ~ minute ~ ":" ~ second ~ ("." ~ digit.rep(min = 3, max = 3)).? ~ "Z'")
   private val range = P(("[" | "{") ~ (numeric | date).? ~ "," ~ (numeric | date).? ~ ("}" | "]"))
+  private val dateTimeRange = P(digit.rep(1) ~ ".." ~ digit.rep(1))
   private val point = P("'" ~ "-".? ~ numeric ~ "," ~ "-".? ~ numeric ~ "'")
   private val boundingBox = P("[" ~ point ~ "," ~ point ~ "]")
 
@@ -50,7 +51,7 @@ class CloudSearchQueryParser {
   private val distanceOpt = P("distance=" ~ digit++)
   private val fieldOpt = P("field=" ~ name)
 
-  private val field = P((name ~ ":" ~ (string | value)) | ("(" ~ "field" ~ name ~ (string | value) ~ ")"))
+  private val field = P((name ~ ":" ~ (dateTimeRange | string | value)) | ("(" ~ "field" ~ name ~ (dateTimeRange |string | value) ~ ")"))
   private val andOp = P("(" ~ "and" ~ boostOpt.? ~ queryOp.rep(1) ~ ")")
   private val orOp = P("(" ~ "or" ~ boostOpt.? ~ queryOp.rep(1) ~ ")")
   private val notOp = P("(" ~ "not" ~ boostOpt.? ~ queryOp ~ ")")
