@@ -1,51 +1,46 @@
-# Gnip rule validator [![Join the chat at https://gitter.im/jeroenr/gnip-rule-validator](https://badges.gitter.im/jeroenr/gnip-rule-validator.svg)](https://gitter.im/jeroenr/gnip-rule-validator) [![Build Status](https://travis-ci.org/jeroenr/gnip-rule-validator.svg?branch=master)](https://travis-ci.org/jeroenr/gnip-rule-validator) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.jeroenr/gnip-rule-validator_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.jeroenr/gnip-rule-validator_2.11)
+# CloudSearch structured query validator
 
-This is a Gnip rule validator that parser Gnip rules using the [the FastParse library](https://lihaoyi.github.io/fastparse/). It's useful to validate the syntax of Gnip rules before submitting them and applying them to your stream.
+This is a CloudSearch structured query that parses queries using the [the FastParse library](https://lihaoyi.github.io/fastparse/). It's useful to validate the syntax of Gnip rules before submitting them and applying them to your stream.
 
 ## Usage
 Add the dependency to your build.sbt
 ```scala
-libraryDependencies += "com.github.jeroenr" %% "gnip-rule-validator" % "0.10"
+libraryDependencies += "com.github.jjwtimmer" %% "cloudsearch-query-validator" % "0.1"
 ```
 Use it!
 ```scala
-import com.github.jeroenr.gnip.rule.validation.GnipRuleValidator
+import com.github.jjwtimmer.cloudsearch.validation.CloudSearchQueryValidator
 import scala.util.{Success, Failure}
 
 // successful parse example
-GnipRuleValidator("(this OR that) (lang:en -from:justinbieber)") // Success("(this OR that) (lang:en -from:justinbieber)")
+CloudSearchQueryValidator("(and (field author 'kafka') title:'I forgot')")
 
 // failed parse example
-GnipRuleValidator("a the https") // Failure(fastparse.core.ParseError: found "a the https", expected NOT ONLY STOPWORDS at index 0
-// a the https
-// ^)
+CloudSearchQueryValidator("a the https")
 
 // pattern matching example
-GnipRuleValidator("(gnip OR from:688583 OR @gnip OR datasift) (\"powertrack -operators\" OR (-\"streaming code\"~4 foo OR bar)) -contains:help has:links url_contains:github") match {
+CloudSearchQueryValidator("(not (or(author:'jjwtimmer' author:'jrosenberg'))") match {
   case Success(result) => println(s"Parsed: $result")
   case Failure(error) => throw error
 }
 ```
 
 ## Disclaimer
-A subset of the [Gnip rule syntax](http://support.gnip.com/apis/powertrack/rules.html) is now supported:
+The documented part of the [CloudSearch structured query syntax](http://docs.aws.amazon.com/cloudsearch/latest/developerguide/search-api.html#structured-search-syntax) is now supported:
 
-1. Stop words are not allowed as stand-alone terms in queries. If you need to find a phrase that contains a stop word, either pair it with an additional term, or use the exact match operators such as “on the roof”. As long as there is at least one required and allowed term in the rule, it will be allowed. Please note that this list of stop words is subject to change, but the current stop words we use are: "a", "an", "and", "at", "but", "by", "com", "from", "http", "https", "if", "in", "is", "it", "its", "me", "my", "or", "rt", "the", "this", "to", "too", "via", "we", "www", "you"
+0. VALUE: either single-quoted string, date, integer, fraction, boundingbox or range
+1. fieldname:VALUE
+2. (field FIELD VALUE)
+3. (and OTHER1 OTHER2 ...)
+4. (or OTHER1 OTHER2 ...)
+5. (not OTHER)
+6. matchall
+7. (phrase boost=FRACTION field=FIELD 'string value')
+8. (prefix boost=FRACTION field=FIELD 'string value')
+9. (range field=FIELD {,'2016-05-23T23:34:33.324Z'])
+10. (term field=FIELD 2000)
 
-2. Rules cannot consist of only negated terms/operators. For example, ‘-cat -dog’ is not valid.
-
-3. Negated ORs are not supported. Such as: apple OR -lang:en
-
-4. A rule keyword or input can start with either a digit (0-9) or any non-punctuation character. Current punctuation characters are defined as the ASCII characters below. Any keyword or input that needs to start with or contains punctuation must be “quoted”. A keyword can not have a colon or parentheses unless you quote it.
-```
-! % & \ ' ( ) * + - . / ; < = > ? \\ , : # @ \t \r \n " [] _
-and the Unicode ranges:
-U+007B -- U+00BF
-U+02B0 -- U+037F
-U+2000 -- U+2BFF
-U+FF00 -- U+FF03
-U+FF05 -- U+FF0F
-```
+The implementation is very naieve, no checking if an option is specified multiple times within the expression, for example, or if a date is a valid date.
 
 ## Contributing
 Pull requests are always welcome

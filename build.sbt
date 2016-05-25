@@ -1,12 +1,12 @@
 import ReleaseTransformations._
 
-name := """cloudsearch-rule-validator"""
+name := """cloudsearch-query-validator"""
 
 scalaVersion := "2.11.7"
 
-packageSummary := "CloudSearch Query Validator"
+packageSummary := "CloudSearch Structered Query Validator"
 
-packageDescription := "CloudSearch Query Validator using FastParse"
+packageDescription := "CloudSearch Structered Query Validator using FastParse"
 
 maintainer := "Jasper Timmer <jjwtimmer@gmail.com>"
 
