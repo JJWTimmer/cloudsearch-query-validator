@@ -19,9 +19,9 @@ CloudSearchQueryValidator("(and (field author 'kafka') title:'I forgot')")
 CloudSearchQueryValidator("a the https")
 
 // pattern matching example
-CloudSearchQueryValidator("(not (or(author:'jjwtimmer' author:'jrosenberg'))") match {
+CloudSearchQueryValidator("(not (or author:'jjwtimmer' author:'jrosenberg'))") match {
   case Success(result) => println(s"Parsed: $result")
-  case Failure(error) => throw error
+  case Failure(error) => println("Not a valid query")
 }
 ```
 
@@ -29,6 +29,12 @@ CloudSearchQueryValidator("(not (or(author:'jjwtimmer' author:'jrosenberg'))") m
 The documented part of the [CloudSearch structured query syntax](http://docs.aws.amazon.com/cloudsearch/latest/developerguide/search-api.html#structured-search-syntax) is now supported:
 
 0. VALUE: either single-quoted string, date, integer, fraction, boundingbox or range
+    1. string: 'example string'
+    2. date: '2016-05-23T23:34:33.324Z'
+    3. integer: 345
+    4. fraction: 234.435
+    5. boundingbox: ['-50.4, 4.56', '45,-4.36']
+    6. range: [,] {,} [,} {,], both left and right bound are optional and can contain date, integer, fraction.
 1. fieldname:VALUE
 2. (field FIELD VALUE)
 3. (and OTHER1 OTHER2 ...)
@@ -39,6 +45,7 @@ The documented part of the [CloudSearch structured query syntax](http://docs.aws
 8. (prefix boost=FRACTION field=FIELD 'string value')
 9. (range field=FIELD {,'2016-05-23T23:34:33.324Z'])
 10. (term field=FIELD 2000)
+11. (near boost=FRACTION distance=INTEGER field=FIELD 'string')
 
 The implementation is very naieve, no checking if an option is specified multiple times within the expression, for example, or if a date is a valid date.
 
