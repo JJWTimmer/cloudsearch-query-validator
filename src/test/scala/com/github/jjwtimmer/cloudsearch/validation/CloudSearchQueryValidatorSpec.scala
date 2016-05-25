@@ -47,7 +47,7 @@ class CloudSearchQueryValidatorSpec extends WordSpec with MustMatchers with TryV
       CloudSearchQueryValidator("timestamp:1464003707..1464104707").success
     }
     "accept boundingBox query" in {
-      CloudSearchQueryValidator("(field place ['-50.4, 4.56', '45,-4.36'])").success
+      CloudSearchQueryValidator("(field place ['-50.4, 4.56', '45, -4.36'])").success
     }
     "accept this difficult query" in {
       CloudSearchQueryValidator("(and (field selftext 'hue') subreddit:'philips' (not (field author 'osram')) (or timestamp:1464003707..1464104707 (phrase field=title boost=10 'mood lighting')))").success
