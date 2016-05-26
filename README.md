@@ -40,7 +40,7 @@ The documented part of the [CloudSearch structured query syntax](http://docs.aws
 2. (field FIELD VALUE)
 3. (and OTHER1 OTHER2 ...)
 4. (or OTHER1 OTHER2 ...)
-5. (not OTHER)
+5. (not OTHER), unsupported syntax: (not field=genres 'Sci-Fi')
 6. matchall
 7. (phrase boost=FRACTION field=FIELD 'string value')
 8. (prefix boost=FRACTION field=FIELD 'string value')
