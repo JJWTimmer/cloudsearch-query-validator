@@ -3,6 +3,8 @@
 
 This is a CloudSearch structured query that parses queries using the [the FastParse library](https://lihaoyi.github.io/fastparse/). It's useful to validate the syntax of structured queries when you allow input from users. In the wild it's used for querying the Reddit API.
 
+If you want to use the Reddit plain syntax, please checkout this project: https://github.com/JJWTimmer/reddit-plain-query-validator
+
 ## Usage
 Add the dependency to your build.sbt
 ```scala
