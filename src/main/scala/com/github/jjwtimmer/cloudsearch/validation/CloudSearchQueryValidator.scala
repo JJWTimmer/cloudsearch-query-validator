@@ -51,7 +51,7 @@ class CloudSearchQueryParser {
   private val distanceOpt = P("distance=" ~ digit++)
   private val fieldOpt = P("field=" ~ name)
 
-  private val field = P((name ~ ":" ~ (dateTimeRange | string | value)) | ("(" ~ "field" ~ name ~ (dateTimeRange |string | value) ~ ")"))
+  private val field = P((name ~ ":" ~ (dateTimeRange | string | value)) | ("(" ~ "field" ~ name ~ (dateTimeRange | string | value) ~ ")"))
   private val andOp = P("(" ~ "and" ~ boostOpt.? ~ queryOp.rep(1) ~ ")")
   private val orOp = P("(" ~ "or" ~ boostOpt.? ~ queryOp.rep(1) ~ ")")
   private val notOp = P("(" ~ "not" ~ boostOpt.? ~ queryOp ~ ")")
@@ -82,7 +82,7 @@ object CloudSearchQueryValidator {
     case Success(matched, index) =>
       log.debug(s"Matched: $matched")
       scala.util.Success(matched)
-    case f@Failure(lastParser, index, extra) =>
+    case f @ Failure(lastParser, index, extra) =>
       val parseError = ParseError(f)
       log.warn(s"Failed to parse rule, expected '$lastParser'. Trace: ${parseError.getMessage}")
       scala.util.Failure(parseError)
